@@ -1,28 +1,75 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <z-form ref="form" :formData="formData" :rules="rules">
+      <Test>
+        <z-form-item prop="username">
+          <label for="username">username</label>
+          <z-input id="username" v-model="formData.username"></z-input>
+        </z-form-item>
+      </Test>
+
+      <z-form-item prop="password">
+        <label for="password">password</label>
+        <z-input
+          id="password"
+          type="password"
+          v-model="formData.password"
+        ></z-input>
+      </z-form-item>
+      <z-form-item>
+        <button @click="submit">提交</button>
+      </z-form-item>
+    </z-form>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import ZForm from "./components/ZForm";
+import ZInput from "./components/ZInput";
+import ZFormItem from "./components/ZFormItem";
+import Test from "./components/test"
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    ZForm,
+    ZInput,
+    ZFormItem,
+    Test
+  },
+  data() {
+    return {
+      formData: {
+        password: "",
+        username: "",
+      },
+      rules: {
+        password: {
+          type: "string",
+          required: true,
+          message: "password is required",
+        },
+        username: {
+          type: "string",
+          required: true,
+          message: "username is required",
+        },
+      },
+    };
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          console.log(valid);
+          return;
+        }
+        console.log("error submit!!");
+        return false;
+      });
+    },
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
